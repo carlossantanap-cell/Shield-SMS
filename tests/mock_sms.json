@@ -1,0 +1,123 @@
+
+[
+  {
+    "text": "URGENT! Your bank account has been compromised. Click here to verify: http://bit.ly/secure123",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Congratulations! You've won $5000 prize. Call 555-0123 now to claim your reward!",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "WINNER! Free entry to win £1000 cash. Text WIN to 87121. Reply STOP to opt out.",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Your package delivery failed. Update your address at www.fake-delivery.com/update",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "ALERT: Suspicious activity detected on your account. Verify immediately at https://secure-bank-verify.com",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "You have been selected for a FREE iPhone 15! Click here: http://tinyurl.com/freeiphone to claim",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "URGENT: Your credit card will be blocked. Call 1-800-555-9999 with code 4782 to prevent suspension",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Felicidades! Ganaste S/ 10,000 en nuestro sorteo. Contacta al 999-888-777 para reclamar tu premio",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Limited time offer! Get 90% discount on luxury watches. Visit www.fake-luxury.com NOW!",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Your Netflix subscription expired. Update payment info at http://goo.gl/netflix-renew or lose access",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "FINAL NOTICE: Tax refund of $850 pending. Claim at www.irs-refund-claim.com before it expires today!",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Código de verificación: 482910. URGENTE: Ingresa este código en www.verify-account.net en 5 minutos",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "FREE CASH BONUS £500! Reply YES to 83838. Standard rates apply. 18+ only. www.bonus-cash.co.uk",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Your Amazon order #12345 requires payment update. Click: http://amzn-secure.com/update-payment",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "WINNER WINNER! You won 2 tickets to FA Cup final. Text FA to 87121. T&Cs apply 08452810075",
+    "expected_label": "smishing"
+  },
+  {
+    "text": "Hey, are you free for lunch tomorrow?",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Thanks for your help yesterday. I really appreciate it!",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Meeting at 3pm in conference room B. Don't forget to bring the reports.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Can you pick up some milk on your way home?",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Happy birthday! Hope you have a wonderful day!",
+    "expected_label": "ham"
+  },
+  {
+    "text": "The project deadline has been extended to next Friday.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "I'll be there in 10 minutes. Traffic is light today.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Reminder: Doctor appointment tomorrow at 2pm.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Great job on the presentation! The client was very impressed.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Let me know when you arrive. I'll meet you at the entrance.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Thanks for the dinner invitation. We'd love to come!",
+    "expected_label": "ham"
+  },
+  {
+    "text": "The package arrived safely. Thank you for sending it so quickly.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "See you at the gym at 6am tomorrow?",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Your reservation is confirmed for Saturday at 7pm.",
+    "expected_label": "ham"
+  },
+  {
+    "text": "Good morning! Have a great day at work.",
+    "expected_label": "ham"
+  }
+]
