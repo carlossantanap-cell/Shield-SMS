@@ -1,11 +1,21 @@
 """
 API FastAPI para Shield-SMS
 Implementación con Pydantic y validaciones - Fase REFACTOR
+Integración completa: API + PLN + Modelo ML
 """
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 from typing import Literal
+import sys
+from pathlib import Path
+
+# Agregar el directorio backend al path para importar módulos
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+# Importar módulos de PLN y Modelo
+from PLN.preprocessing import preprocesar_completo
+from ModeloML.rules_model import classify
 
 # Modelos Pydantic para request/response
 
@@ -173,11 +183,17 @@ async def classify_sms(request: SMSRequest) -> SMSResponse:
         ```
     """
     try:
-        # Implementación dummy - retorna clasificación básica
-        # En fases posteriores se integrará el modelo ML real
+        # Integración completa: PLN + Modelo ML
+        # 1. Preprocesar texto con PLN (opcional, el modelo ya lo hace internamente)
+        texto_procesado = preprocesar_completo(request.text)
+        
+        # 2. Clasificar con el modelo ML basado en reglas
+        resultado = classify(request.text)
+        
+        # 3. Retornar respuesta estructurada
         return SMSResponse(
-            label="ham",
-            score=0.5,
+            label=resultado["label"],
+            score=resultado["score"],
             text=request.text
         )
     except Exception as e:
