@@ -1,0 +1,47 @@
+
+name: CI/CD Pipeline - Shield-SMS
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - 'feature/**'
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Configurar Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r backend/requirements.txt
+        
+    - name: Descargar datos NLTK
+      run: |
+        python -c "import nltk; nltk.download('stopwords', quiet=True)"
+        
+    - name: Ejecutar tests con coverage
+      run: |
+        pytest tests/api_tests.py tests/pln_tests.py tests/model_tests.py tests/integracion_test.py --cov=backend --cov-report=term-missing --cov-report=xml
+        
+    - name: Subir reporte de coverage
+      uses: codecov/codecov-action@v3
+      if: always()
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        name: codecov-shield-sms
+        fail_ci_if_error: false
