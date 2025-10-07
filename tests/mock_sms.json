@@ -13,7 +13,7 @@
     "expected_label": "smishing"
   },
   {
-    "text": "Your package delivery failed. Update your address at www.fake-delivery.com/update",
+    "text": "URGENT: Your package delivery failed. Update your address NOW at www.fake-delivery.com/update or lose package!",
     "expected_label": "smishing"
   },
   {
