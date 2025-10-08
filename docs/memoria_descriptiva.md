@@ -7,7 +7,7 @@
 - Santana (carlos.santana@uni.pe) - API REST & Integración
 - Gonzales (j.gonzales.avendano@uni.pe) - Modelo ML
 - Lipa (maria.lipa@uni.pe) - Procesamiento de Lenguaje Natural
-- Achalma (pedro.achalma@uni.pe) - Testing & Validación
+- Achalma (alexandro.achalma.g@uni.pe) - Testing & Validación
 
 **Fecha:** Octubre 2025
 
