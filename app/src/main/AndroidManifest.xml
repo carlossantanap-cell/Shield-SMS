@@ -19,7 +19,6 @@
             </intent-filter>
         </receiver>
 
-        <!-- Descomentar cuando tengas MainActivity
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
@@ -28,6 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        -->
+
     </application>
 </manifest>
