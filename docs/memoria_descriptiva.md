@@ -4,7 +4,7 @@
 **Proyecto Final del Curso CIB02-O (Ingeniería de Software)**
 
 **Autores:**
-- Santana (carlos.santana@uni.pe) - API REST & Integración
+- Santana (uvitalunarosa@uni.pe) - API REST & Integración
 - Gonzales (j.gonzales.avendano@uni.pe) - Modelo ML
 - Lipa (maria.lipa@uni.pe) - Procesamiento de Lenguaje Natural
 - Achalma (alexandro.achalma.g@uni.pe) - Testing & Validación
