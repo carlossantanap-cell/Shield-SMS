@@ -246,7 +246,7 @@ graph TB
 
 ## 4. Implementación de Componentes
 
-### 4.1 Módulo API (Carlos Santana)
+### 4.1 Módulo API (Santana)
 
 #### 4.1.1 Estructura del Código
 
@@ -307,7 +307,7 @@ POST /classify
 }
 ```
 
-### 4.2 Módulo PLN (María Lipa)
+### 4.2 Módulo PLN (Lipa)
 
 #### 4.2.1 Estructura del Código
 
@@ -356,7 +356,7 @@ Lista de 50+ palabras clave que indican urgencia o presión:
 - Español: urgente, inmediato, ahora, rápido, último, expira, ganaste, premio, gratis
 - Inglés: urgent, immediate, now, quick, last, expires, won, prize, free, claim
 
-### 4.3 Módulo Modelo ML (Juan Gonzales)
+### 4.3 Módulo Modelo ML (Gonzales)
 
 #### 4.3.1 Estructura del Código
 
@@ -423,7 +423,7 @@ confidence = min(score / 0.55, 1.0) if smishing else 1.0 - score
 3. **Bonus por combinación**: +0.10 si múltiples indicadores presentes
 4. **Normalización de confianza**: Escala 0-1 basada en distancia al umbral
 
-### 4.4 Módulo de Utilidades (Pedro Achalma)
+### 4.4 Módulo de Utilidades (Achalma)
 
 #### 4.4.1 Validación de URLs
 
