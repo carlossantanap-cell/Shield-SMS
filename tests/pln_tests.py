@@ -1,10 +1,11 @@
 """
 Tests para el módulo PLN (Procesamiento de Lenguaje Natural)
-Metodología TDD - FASE RED
+Metodología TDD - FASE REFACTOR
 Autor: Antony Lipa (antony.lipa.b@uni.pe)
 """
 
 import pytest
+import time
 from backend.PLN.preprocessing import (
     limpiar_texto,
     tokenizar,
@@ -81,6 +82,22 @@ class TestLimpiarTexto:
     def test_texto_solo_espacios(self):
         resultado = limpiar_texto("     ")
         assert resultado == ""
+    
+    def test_texto_none(self):
+        """Test caso edge: texto None"""
+        resultado = limpiar_texto(None)
+        assert resultado == ""
+    
+    def test_texto_solo_emojis(self):
+        """Test caso edge: texto solo con emojis"""
+        resultado = limpiar_texto("🎉🎊🏆")
+        assert resultado == ""
+    
+    def test_texto_solo_numeros(self):
+        """Test caso edge: texto solo con números - se eliminan caracteres especiales"""
+        resultado = limpiar_texto("123 456 789")
+        # Los números se mantienen pero sin caracteres especiales
+        assert isinstance(resultado, str)
 
 
 class TestTokenizar:
@@ -105,6 +122,16 @@ class TestTokenizar:
         texto = "este es un texto largo con muchas palabras para tokenizar"
         tokens = tokenizar(texto)
         assert len(tokens) == 10
+    
+    def test_tokenizar_none(self):
+        """Test caso edge: texto None"""
+        tokens = tokenizar(None)
+        assert tokens == []
+    
+    def test_tokenizar_solo_espacios(self):
+        """Test caso edge: solo espacios"""
+        tokens = tokenizar("     ")
+        assert tokens == []
 
 
 class TestExtraerUrls:
@@ -139,6 +166,11 @@ class TestExtraerUrls:
         texto = "Este texto no tiene URLs"
         urls = extraer_urls(texto)
         assert urls == []
+    
+    def test_extraer_urls_none(self):
+        """Test caso edge: texto None"""
+        urls = extraer_urls(None)
+        assert urls == []
 
 
 class TestExtraerEmails:
@@ -162,6 +194,11 @@ class TestExtraerEmails:
     def test_sin_emails(self):
         texto = "Este texto no tiene emails"
         emails = extraer_emails(texto)
+        assert emails == []
+    
+    def test_extraer_emails_none(self):
+        """Test caso edge: texto None"""
+        emails = extraer_emails(None)
         assert emails == []
 
 
@@ -192,6 +229,11 @@ class TestExtraerNumeros:
         texto = "Este texto no tiene números"
         numeros = extraer_numeros(texto)
         assert numeros == []
+    
+    def test_extraer_numeros_none(self):
+        """Test caso edge: texto None"""
+        numeros = extraer_numeros(None)
+        assert numeros == []
 
 
 class TestExtraerMontos:
@@ -221,6 +263,11 @@ class TestExtraerMontos:
         texto = "Este texto no tiene montos"
         montos = extraer_montos(texto)
         assert montos == []
+    
+    def test_extraer_montos_none(self):
+        """Test caso edge: texto None"""
+        montos = extraer_montos(None)
+        assert montos == []
 
 
 class TestExtraerPalabrasClave:
@@ -244,18 +291,23 @@ class TestExtraerPalabrasClave:
     def test_detectar_banco(self):
         texto = "Tu banco requiere verificación"
         palabras = extraer_palabras_clave(texto)
-        assert "banco" in palabras or "verificación" in palabras
+        assert "banco" in palabras
     
     def test_detectar_click(self):
         texto = "Haz click aquí para ganar"
         palabras = extraer_palabras_clave(texto)
-        assert "click" in palabras or "ganar" in palabras
+        assert "click" in palabras
     
     def test_sin_palabras_clave(self):
         texto = "Este es un mensaje normal"
         palabras = extraer_palabras_clave(texto)
         # Puede retornar lista vacía o con pocas palabras
         assert isinstance(palabras, list)
+    
+    def test_detectar_palabras_clave_none(self):
+        """Test caso edge: texto None"""
+        palabras = extraer_palabras_clave(None)
+        assert palabras == []
 
 
 class TestPreprocesarCompleto:
@@ -304,3 +356,58 @@ class TestPreprocesarCompleto:
         assert resultado["tokens"] == []
         assert resultado["urls"] == []
         assert resultado["emails"] == []
+    
+    def test_preprocesar_none(self):
+        """Test caso edge: texto None"""
+        resultado = preprocesar_completo(None)
+        assert resultado["texto_limpio"] == ""
+        assert resultado["tokens"] == []
+        assert resultado["urls"] == []
+    
+    def test_mensaje_spam_complejo(self):
+        """Test con mensaje spam complejo del dataset"""
+        texto = "FreeMsg: Txt: CALL to No: 86888 & claim your reward of 3 hours talk time to use from your phone now! ubscribe6GBP/ mnth inc 3hrs 16 stop?txtStop"
+        resultado = preprocesar_completo(texto)
+        
+        assert len(resultado["palabras_clave"]) > 0
+        assert len(resultado["numeros"]) > 0
+        assert isinstance(resultado["texto_limpio"], str)
+
+
+class TestRendimiento:
+    """Tests de rendimiento del módulo PLN"""
+    
+    def test_rendimiento_100_mensajes(self):
+        """Test: procesar 100 mensajes en menos de 1 segundo"""
+        mensajes = [
+            "URGENT! You have won a prize!",
+            "Ok lar... Joking wif u oni...",
+            "FreeMsg: Txt CALL to claim reward",
+            "Hey, how are you doing today?",
+            "Your bank account needs verification"
+        ] * 20  # 100 mensajes
+        
+        inicio = time.time()
+        for mensaje in mensajes:
+            preprocesar_completo(mensaje)
+        fin = time.time()
+        
+        tiempo_total = fin - inicio
+        assert tiempo_total < 1.0, f"Procesamiento tomó {tiempo_total:.2f}s (esperado < 1s)"
+    
+    def test_rendimiento_texto_largo(self):
+        """Test: procesar texto largo eficientemente"""
+        texto_largo = " ".join([
+            "URGENT! You have won a prize! Click here http://fake.com",
+            "Contact us at spam@fake.com or call 123456789",
+            "Claim your $1000 USD reward now! Limited time offer!"
+        ] * 10)  # Texto muy largo
+        
+        inicio = time.time()
+        resultado = preprocesar_completo(texto_largo)
+        fin = time.time()
+        
+        tiempo_total = fin - inicio
+        assert tiempo_total < 0.1, f"Procesamiento tomó {tiempo_total:.2f}s (esperado < 0.1s)"
+        assert len(resultado["palabras_clave"]) > 0
+        assert len(resultado["urls"]) > 0
