@@ -1,6 +1,6 @@
 """
 Tests para la API FastAPI de Shield-SMS
-Metodología TDD - Fase RED
+Metodología TDD - Fase REFACTOR con casos edge
 """
 import pytest
 from fastapi.testclient import TestClient
@@ -93,3 +93,96 @@ class TestClassifyEndpoint:
         """Verifica que rechaza texto con solo espacios en blanco"""
         response = client.post("/classify", json={"text": "   "})
         assert response.status_code == 422
+
+
+class TestClassifyEdgeCases:
+    """Tests para casos edge del endpoint /classify"""
+    
+    def test_classify_rejects_very_long_text(self):
+        """Verifica que rechaza texto muy largo (>1000 caracteres)"""
+        long_text = "A" * 1001
+        response = client.post("/classify", json={"text": long_text})
+        assert response.status_code == 422
+    
+    def test_classify_accepts_max_length_text(self):
+        """Verifica que acepta texto de exactamente 1000 caracteres"""
+        max_text = "A" * 1000
+        response = client.post("/classify", json={"text": max_text})
+        assert response.status_code == 200
+    
+    def test_classify_accepts_single_character(self):
+        """Verifica que acepta texto de un solo carácter"""
+        response = client.post("/classify", json={"text": "A"})
+        assert response.status_code == 200
+    
+    def test_classify_handles_special_characters(self):
+        """Verifica que maneja correctamente caracteres especiales"""
+        special_text = "Hello! @#$%^&*() <> {} [] | \\ / ? ~ `"
+        response = client.post("/classify", json={"text": special_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == special_text
+    
+    def test_classify_handles_emojis(self):
+        """Verifica que maneja correctamente emojis"""
+        emoji_text = "Hello 👋 World 🌍 Test 🎉"
+        response = client.post("/classify", json={"text": emoji_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == emoji_text
+    
+    def test_classify_handles_unicode_characters(self):
+        """Verifica que maneja correctamente caracteres Unicode"""
+        unicode_text = "Hola ñ á é í ó ú ü 你好 مرحبا"
+        response = client.post("/classify", json={"text": unicode_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == unicode_text
+    
+    def test_classify_handles_newlines_and_tabs(self):
+        """Verifica que maneja correctamente saltos de línea y tabulaciones"""
+        multiline_text = "Line 1\nLine 2\tTabbed\rCarriage return"
+        response = client.post("/classify", json={"text": multiline_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == multiline_text
+    
+    def test_classify_handles_mixed_languages(self):
+        """Verifica que maneja correctamente texto en diferentes idiomas"""
+        mixed_text = "English, Español, Français, Deutsch, 日本語, 中文"
+        response = client.post("/classify", json={"text": mixed_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == mixed_text
+    
+    def test_classify_handles_numbers_only(self):
+        """Verifica que maneja correctamente texto con solo números"""
+        numbers_text = "1234567890"
+        response = client.post("/classify", json={"text": numbers_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == numbers_text
+    
+    def test_classify_handles_urls(self):
+        """Verifica que maneja correctamente URLs en el texto"""
+        url_text = "Visit https://example.com or http://test.org for more info"
+        response = client.post("/classify", json={"text": url_text})
+        assert response.status_code == 200
+        data = response.json()
+        assert data["text"] == url_text
+    
+    def test_classify_response_schema_validation(self):
+        """Verifica que la respuesta cumple con el schema completo"""
+        response = client.post("/classify", json={"text": "Test message"})
+        assert response.status_code == 200
+        data = response.json()
+        
+        # Verificar tipos de datos
+        assert isinstance(data["label"], str)
+        assert isinstance(data["score"], float)
+        assert isinstance(data["text"], str)
+        
+        # Verificar valores válidos
+        assert data["label"] in ["smishing", "ham"]
+        assert 0.0 <= data["score"] <= 1.0
+        assert len(data["text"]) > 0
