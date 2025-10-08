@@ -254,7 +254,7 @@ class TestModelInfo:
 
 
 class TestEvaluarModelo:
-    """Tests para la función evaluar_modelo (se agregarán en fase REFACTOR)"""
+    """Tests para la función evaluar_modelo"""
     
     def test_evaluar_modelo_retorna_dict(self):
         """Verificar que evaluar_modelo retorna un diccionario"""
@@ -276,3 +276,177 @@ class TestEvaluarModelo:
         assert 0.0 <= result["precision"] <= 1.0
         assert 0.0 <= result["recall"] <= 1.0
         assert 0.0 <= result["f1_score"] <= 1.0
+    
+    def test_evaluar_modelo_accuracy_minima(self):
+        """Verificar que el accuracy es mayor al 85% (requisito del proyecto)"""
+        result = evaluar_modelo()
+        assert result["accuracy"] >= 0.85, f"Accuracy {result['accuracy']:.4f} es menor al 85% requerido"
+    
+    def test_evaluar_modelo_precision_aceptable(self):
+        """Verificar que la precision es aceptable (> 80%)"""
+        result = evaluar_modelo()
+        assert result["precision"] >= 0.80, f"Precision {result['precision']:.4f} es menor al 80%"
+    
+    def test_evaluar_modelo_recall_aceptable(self):
+        """Verificar que el recall es aceptable (> 80%)"""
+        result = evaluar_modelo()
+        assert result["recall"] >= 0.80, f"Recall {result['recall']:.4f} es menor al 80%"
+
+
+class TestDatasetCompleto:
+    """Tests con el dataset completo"""
+    
+    def test_clasificar_todos_los_mensajes(self):
+        """Verificar que se pueden clasificar todos los mensajes del dataset"""
+        import os
+        from pathlib import Path
+        
+        dataset_path = Path(__file__).parent.parent / "backend" / "data" / "dataset.csv"
+        
+        if not dataset_path.exists():
+            pytest.skip("Dataset no encontrado")
+        
+        total = 0
+        errores = 0
+        
+        with open(dataset_path, 'r', encoding='utf-8') as f:
+            for line in f:
+                parts = line.strip().split('\t', 1)
+                if len(parts) != 2:
+                    continue
+                
+                _, text = parts
+                total += 1
+                
+                try:
+                    result = classify(text)
+                    assert "label" in result
+                    assert "score" in result
+                    assert "reasons" in result
+                except Exception as e:
+                    errores += 1
+        
+        assert total > 5000, "Dataset debe tener más de 5000 mensajes"
+        assert errores == 0, f"Se encontraron {errores} errores al clasificar mensajes"
+
+
+class TestRendimiento:
+    """Tests de rendimiento del modelo"""
+    
+    def test_clasificar_1000_mensajes_rapido(self):
+        """Verificar que se pueden clasificar 1000 mensajes en menos de 2 segundos"""
+        import time
+        import os
+        from pathlib import Path
+        
+        dataset_path = Path(__file__).parent.parent / "backend" / "data" / "dataset.csv"
+        
+        if not dataset_path.exists():
+            pytest.skip("Dataset no encontrado")
+        
+        # Leer primeros 1000 mensajes
+        mensajes = []
+        with open(dataset_path, 'r', encoding='utf-8') as f:
+            for i, line in enumerate(f):
+                if i >= 1000:
+                    break
+                parts = line.strip().split('\t', 1)
+                if len(parts) == 2:
+                    mensajes.append(parts[1])
+        
+        # Medir tiempo de clasificación
+        start_time = time.time()
+        for mensaje in mensajes:
+            classify(mensaje)
+        elapsed_time = time.time() - start_time
+        
+        assert elapsed_time < 2.0, f"Clasificar 1000 mensajes tomó {elapsed_time:.2f}s (debe ser < 2s)"
+
+
+class TestCasosEdge:
+    """Tests de casos edge adicionales"""
+    
+    def test_mensaje_solo_numeros(self):
+        """Mensaje con solo números"""
+        result = classify("123456789")
+        assert result["label"] in ["smishing", "ham"]
+        assert 0.0 <= result["score"] <= 1.0
+    
+    def test_mensaje_solo_simbolos(self):
+        """Mensaje con solo símbolos"""
+        result = classify("!@#$%^&*()")
+        assert result["label"] in ["smishing", "ham"]
+        assert 0.0 <= result["score"] <= 1.0
+    
+    def test_mensaje_muy_largo(self):
+        """Mensaje extremadamente largo"""
+        mensaje = "A" * 1000
+        result = classify(mensaje)
+        assert result["label"] in ["smishing", "ham"]
+        assert 0.0 <= result["score"] <= 1.0
+    
+    def test_mensaje_con_caracteres_especiales(self):
+        """Mensaje con caracteres especiales y emojis"""
+        mensaje = "Hola 😊 ¿Cómo estás? ñáéíóú"
+        result = classify(mensaje)
+        assert result["label"] in ["smishing", "ham"]
+        assert 0.0 <= result["score"] <= 1.0
+    
+    def test_mensaje_multilinea(self):
+        """Mensaje con múltiples líneas"""
+        mensaje = "Línea 1\nLínea 2\nLínea 3"
+        result = classify(mensaje)
+        assert result["label"] in ["smishing", "ham"]
+        assert 0.0 <= result["score"] <= 1.0
+    
+    def test_mensaje_con_espacios_multiples(self):
+        """Mensaje con espacios múltiples"""
+        mensaje = "Hola     mundo     con     espacios"
+        result = classify(mensaje)
+        assert result["label"] in ["smishing", "ham"]
+        assert 0.0 <= result["score"] <= 1.0
+
+
+class TestReglasAdicionales:
+    """Tests para las reglas adicionales optimizadas"""
+    
+    def test_mensaje_largo_aumenta_score(self):
+        """Mensajes largos deben tener mayor score"""
+        mensaje_corto = "Hola"
+        mensaje_largo = "Este es un mensaje muy largo que contiene muchas palabras y caracteres para probar la regla de longitud sospechosa del modelo de detección"
+        
+        result_corto = classify(mensaje_corto)
+        result_largo = classify(mensaje_largo)
+        
+        # El mensaje largo debe tener mayor o igual score
+        assert result_largo["score"] >= result_corto["score"]
+    
+    def test_mayusculas_excesivas_detectadas(self):
+        """Mensajes con muchas mayúsculas deben ser detectados"""
+        mensaje = "URGENT URGENT URGENT WIN NOW CLICK HERE"
+        result = classify(mensaje)
+        
+        assert "mayusculas_excesivas" in result["reasons"] or result["score"] > 0.5
+    
+    def test_multiples_exclamaciones_detectadas(self):
+        """Mensajes con múltiples exclamaciones deben ser detectados"""
+        mensaje = "Felicidades!! Ganaste un premio!!"
+        result = classify(mensaje)
+        
+        assert "multiples_exclamaciones" in result["reasons"] or result["score"] > 0.3
+    
+    def test_urgencia_detectada(self):
+        """Palabras de urgencia deben ser detectadas"""
+        mensaje = "URGENT: Act now or lose this opportunity"
+        result = classify(mensaje)
+        
+        assert "urgencia_detectada" in result["reasons"] or result["score"] > 0.3
+    
+    def test_combinacion_indicadores_bonus(self):
+        """Combinación de múltiples indicadores debe dar bonus"""
+        mensaje = "URGENT! Win $1000 now: http://bit.ly/prize contact winner@prize.com code: 12345"
+        result = classify(mensaje)
+        
+        # Debe tener múltiples indicadores
+        assert len(result["reasons"]) >= 3
+        assert result["score"] > 0.7
