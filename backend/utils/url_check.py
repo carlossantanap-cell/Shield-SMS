@@ -1,47 +1,64 @@
 """
-Módulo de Utilidades para Validación de URLs
+Módulo de Utilidades para Validación de URLs - REFACTORIZADO
 Autor: Alexandro Achalma (alexandro.achalma.g@uni.pe)
 Metodología: TDD (Test-Driven Development)
 
-Funciones para detectar URLs sospechosas, acortadas y analizar riesgos.
+Funciones optimizadas para detectar URLs sospechosas, acortadas y analizar riesgos.
+Incluye caché para mejorar rendimiento y análisis más completo de URLs.
+
+Versión: 2.0.0 (Refactorizada)
 """
 
 import re
-from typing import Dict, Optional, Set
+from typing import Dict, Optional, Set, Any
 from urllib.parse import urlparse
 from functools import lru_cache
 
-# Dominios confiables comunes
+# Dominios confiables expandidos (más de 50 dominios)
 DOMINIOS_CONFIABLES: Set[str] = {
     # Redes sociales
     'facebook.com', 'twitter.com', 'instagram.com', 'linkedin.com', 'youtube.com',
     'tiktok.com', 'snapchat.com', 'reddit.com', 'pinterest.com', 'whatsapp.com',
+    'telegram.org', 'discord.com', 'twitch.tv', 'vimeo.com', 'tumblr.com',
     
     # Tecnología y servicios
     'google.com', 'gmail.com', 'microsoft.com', 'apple.com', 'amazon.com',
     'netflix.com', 'spotify.com', 'dropbox.com', 'zoom.us', 'slack.com',
+    'github.com', 'gitlab.com', 'stackoverflow.com', 'medium.com', 'wordpress.com',
+    'adobe.com', 'oracle.com', 'salesforce.com', 'ibm.com', 'intel.com',
     
     # Bancos y finanzas (principales)
     'paypal.com', 'visa.com', 'mastercard.com', 'chase.com', 'bankofamerica.com',
+    'wellsfargo.com', 'citibank.com', 'hsbc.com', 'barclays.com', 'santander.com',
+    'bcp.com.pe', 'bbva.pe', 'interbank.pe', 'scotiabank.com.pe',
     
     # Gobierno y educación
-    'gob.pe', 'gov', 'edu', 'ac.uk', 'edu.pe',
+    'gob.pe', 'gov', 'edu', 'ac.uk', 'edu.pe', 'gov.uk', 'europa.eu',
+    'un.org', 'who.int', 'unesco.org', 'mit.edu', 'stanford.edu',
     
     # E-commerce
     'ebay.com', 'aliexpress.com', 'mercadolibre.com', 'walmart.com',
+    'target.com', 'bestbuy.com', 'etsy.com', 'shopify.com', 'alibaba.com',
     
-    # Noticias
-    'bbc.com', 'cnn.com', 'nytimes.com', 'theguardian.com', 'reuters.com'
+    # Noticias y medios
+    'bbc.com', 'cnn.com', 'nytimes.com', 'theguardian.com', 'reuters.com',
+    'bloomberg.com', 'forbes.com', 'wsj.com', 'washingtonpost.com', 'npr.org',
+    
+    # Otros servicios populares
+    'wikipedia.org', 'wikimedia.org', 'cloudflare.com', 'akamai.com',
+    'mozilla.org', 'w3.org', 'ietf.org', 'ieee.org'
 }
 
-# Acortadores de URL conocidos
+# Acortadores de URL expandidos (más de 40 servicios)
 ACORTADORES_URL: Set[str] = {
     'bit.ly', 'tinyurl.com', 'goo.gl', 't.co', 'ow.ly', 'is.gd', 'buff.ly',
     'adf.ly', 'bl.ink', 'lnkd.in', 'shorte.st', 'mcaf.ee', 'q.gs', 'po.st',
     'bc.vc', 'twitthis.com', 'u.to', 'j.mp', 'buzurl.com', 'cutt.us',
     'u.bb', 'yourls.org', 'x.co', 'prettylinkpro.com', 'scrnch.me',
     'filoops.info', 'vzturl.com', 'qr.net', '1url.com', 'tweez.me',
-    'v.gd', 'tr.im', 'link.zip', 'short.link', 'tiny.cc'
+    'v.gd', 'tr.im', 'link.zip', 'short.link', 'tiny.cc', 'rb.gy',
+    'clck.ru', 'shorturl.at', 'tinycc.com', 'hyperurl.co', 'urlzs.com',
+    'soo.gd', 'ity.im', 's2r.co', 'goo.su', 'tiny.one', 'rebrand.ly'
 }
 
 # Patrones regex para validación
@@ -55,9 +72,12 @@ URL_PATTERN = re.compile(
 IP_PATTERN = re.compile(r'\b(?:\d{1,3}\.){3}\d{1,3}\b')
 
 
+@lru_cache(maxsize=512)
 def validar_url(url: str) -> bool:
     """
     Valida si una cadena tiene formato de URL válido.
+    
+    Utiliza caché LRU para mejorar rendimiento en validaciones repetidas.
     
     Args:
         url: Cadena a validar
@@ -70,6 +90,9 @@ def validar_url(url: str) -> bool:
         True
         >>> validar_url("not a url")
         False
+        
+    Note:
+        Esta función está cacheada para mejorar el rendimiento.
     """
     if not url or not isinstance(url, str):
         return False
@@ -81,9 +104,12 @@ def validar_url(url: str) -> bool:
     return bool(URL_PATTERN.match(url))
 
 
+@lru_cache(maxsize=512)
 def extraer_dominio(url: str) -> str:
     """
     Extrae el dominio principal de una URL.
+    
+    Utiliza caché LRU para mejorar rendimiento en extracciones repetidas.
     
     Args:
         url: URL de la cual extraer el dominio
@@ -96,6 +122,12 @@ def extraer_dominio(url: str) -> str:
         'google.com'
         >>> extraer_dominio("http://bit.ly/abc")
         'bit.ly'
+        >>> extraer_dominio("https://subdomain.example.com/path")
+        'subdomain.example.com'
+        
+    Note:
+        Esta función está cacheada para mejorar el rendimiento.
+        Los subdominios se mantienen para análisis más preciso.
     """
     if not url:
         return ""
@@ -211,8 +243,8 @@ def es_url_sospechosa(url: str) -> bool:
     return True
 
 
-@lru_cache(maxsize=256)
-def analizar_url_completo(url: str) -> Dict[str, any]:
+@lru_cache(maxsize=1024)
+def analizar_url_completo(url: str) -> Dict[str, Any]:
     """
     Realiza un análisis completo de una URL y retorna un diccionario con métricas.
     
