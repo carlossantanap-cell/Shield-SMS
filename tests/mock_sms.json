@@ -61,63 +61,63 @@
     "expected_label": "spam"
   },
   {
-    "text": "Hola, ¿estás libre para almorzar mañana?",
+    "text": "Hey, are you free for lunch tomorrow?",
     "expected_label": "ham"
   },
   {
-    "text": "Gracias por tu ayuda ayer. ¡Realmente lo aprecio!",
+    "text": "Thanks for your help yesterday. I really appreciate it!",
     "expected_label": "ham"
   },
   {
-    "text": "Reunión a las 3 p.m. en la sala de conferencias B. No olvides traer los informes.",
+    "text": "Meeting at 3pm in conference room B. Don't forget to bring the reports.",
     "expected_label": "ham"
   },
   {
-    "text": "¿Puedes comprar leche de camino a casa?",
+    "text": "Can you pick up some milk on your way home?",
     "expected_label": "ham"
   },
   {
-    "text": "¡Feliz cumpleaños! ¡Espero que tengas un día maravilloso!",
+    "text": "Happy birthday! Hope you have a wonderful day!",
     "expected_label": "ham"
   },
   {
-    "text": "La fecha límite del proyecto se ha extendido hasta el próximo viernes.",
+    "text": "The project deadline has been extended to next Friday.",
     "expected_label": "ham"
   },
   {
-    "text": "Estaré allí en 10 minutos. El tráfico está ligero hoy.",
+    "text": "I'll be there in 10 minutes. Traffic is light today.",
     "expected_label": "ham"
   },
   {
-    "text": "Recordatorio: Cita con el médico mañana a las 2 p.m.",
+    "text": "Reminder: Doctor appointment tomorrow at 2pm.",
     "expected_label": "ham"
   },
   {
-    "text": "¡Gran trabajo en la presentación! El cliente quedó muy impresionado.",
+    "text": "Great job on the presentation! The client was very impressed.",
     "expected_label": "ham"
   },
   {
-    "text": "Avísame cuando llegues. Te encontraré en la entrada.",
+    "text": "Let me know when you arrive. I'll meet you at the entrance.",
     "expected_label": "ham"
   },
   {
-    "text": "Gracias por la invitación a cenar. ¡Nos encantaría ir!",
+    "text": "Thanks for the dinner invitation. We'd love to come!",
     "expected_label": "ham"
   },
   {
-    "text": "El paquete llegó sin problemas. Gracias por enviarlo tan rápido.",
+    "text": "The package arrived safely. Thank you for sending it so quickly.",
     "expected_label": "ham"
   },
   {
-    "text": "¿Nos vemos en el gimnasio a las 6 a.m. mañana?",
+    "text": "See you at the gym at 6am tomorrow?",
     "expected_label": "ham"
   },
   {
-    "text": "Su reserva está confirmada para el sábado a las 7 p.m.",
+    "text": "Your reservation is confirmed for Saturday at 7pm.",
     "expected_label": "ham"
   },
   {
-    "text": "¡Buenos días! Que tengas un gran día en el trabajo.",
+    "text": "Good morning! Have a great day at work.",
     "expected_label": "ham"
   }
 ]
