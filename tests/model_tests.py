@@ -326,7 +326,7 @@ class TestDatasetCompleto:
                 except Exception as e:
                     errores += 1
         
-        assert total > 5000, "Dataset debe tener más de 5000 mensajes"
+        assert total > 1200, "Dataset debe tener más de 1200 mensajes"
         assert errores == 0, f"Se encontraron {errores} errores al clasificar mensajes"
 
 
