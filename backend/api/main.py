@@ -9,32 +9,34 @@ except Exception:  # noqa
     predict_label_score = None
     load_pipeline = None
 
-# ===== Reglas opcionales (ajusta import a tu módulo real si lo tienes) =====
+# ===== Reglas opcionales =====
 try:
-    # Ejemplo: from backend.ModeloML.rules_model import classify_by_rules
     from ModeloML.rules_model import classify_by_rules  # -> (label, features)
 except Exception:  # noqa
     classify_by_rules = None
 
 app = FastAPI(title="Shield-SMS API")
 
+
 class InText(BaseModel):
-    text: str
+    # 🔧 Permitir texto vacío u omitido para evitar error 422
+    text: str | None = ""
+
 
 @app.on_event("startup")
 def on_startup():
-    # Intentar cargar el modelo ML si existe (ruta por defecto o variable de entorno)
+    # Intentar cargar el modelo ML si existe
     if load_pipeline:
         try:
             load_pipeline()
         except Exception:
             pass
 
+
 @app.get("/health")
 def health():
     """Verifica el estado del servicio y si el modelo ML está cargado correctamente."""
     import os
-    from ModeloML.infer_ml import load_pipeline
 
     ml_ok = False
     model_path = os.getenv("SMS_ML_PATH", "backend/ModeloML/artifacts/sms_pipeline.joblib")
@@ -43,9 +45,10 @@ def health():
 
     return {
         "status": "ok",
-        "service": "ShieldSMS",  # requerido por el test
+        "service": "ShieldSMS",  # requerido por los tests
         "ml_loaded": ml_ok
     }
+
 
 @app.post("/classify")
 def classify(inp: InText):
@@ -72,7 +75,7 @@ def classify(inp: InText):
             if out is not None:
                 label, score = out
                 return {
-                    "text": text,  # requerido por los tests
+                    "text": text,
                     "label": label,
                     "score": float(score) if score is not None else None,
                     "source": "ml"
@@ -97,12 +100,12 @@ def classify(inp: InText):
     # ⚙️ 4) Fallback básico (sin ML ni reglas)
     text_lower = text.lower()
     if any(word in text_lower for word in ["congratulations", "prize", "click", "http", "win"]):
-        label = "smishing"  # antes devolvía 'ham', ahora correcto
+        label = "smishing"
     else:
         label = "ham"
 
     return {
-        "text": text,  # requerido por los tests
+        "text": text,
         "label": label,
         "score": None,
         "source": "fallback"
