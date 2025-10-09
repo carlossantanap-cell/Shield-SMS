@@ -6,7 +6,11 @@ import joblib
 from typing import Optional, Tuple
 
 _PIPELINE = None
+<<<<<<< HEAD
 _PATH = os.getenv("SMS_ML_PATH", "backend/ml/artifacts/sms_pipeline.joblib")
+=======
+_PATH = os.getenv("SMS_ML_PATH", "backend/ModeloML/artifacts/sms_pipeline.joblib")
+>>>>>>> 275ca754b4a5c9c59f638d3b5a4bbea02a8507ff
 
 def load_pipeline(path: Optional[str] = None):
     global _PIPELINE
