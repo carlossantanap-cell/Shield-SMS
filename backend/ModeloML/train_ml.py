@@ -3,7 +3,7 @@ Entrena un modelo ML (TF-IDF + LinearSVC) sobre SMSSpamCollection o dataset.csv
 y guarda vectorizador+modelo con joblib.
 
 Uso:
-  python -m ml.train_ml --data backend/data/SMSSpamCollection.txt --out backend/ml/artifacts
+  python -m ModeloML.train_ml --data backend/data/SMSSpamCollection.txt --out backend/ml/artifacts
 """
 import argparse
 import os
@@ -29,7 +29,7 @@ def load_data(path: str) -> pd.DataFrame:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--data", required=True, help="ruta dataset (SMSSpamCollection.txt o CSV)")
-    ap.add_argument("--out", default="backend/ml/artifacts", help="carpeta de salida")
+    ap.add_argument("--out", default="backend/ModeloML/artifacts", help="carpeta de salida")
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
