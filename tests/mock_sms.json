@@ -2,63 +2,63 @@
 [
   {
     "text": "¡URGENTE! Su cuenta bancaria ha sido comprometida. Haga clic aquí para verificar: http://bit.ly/secure123",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡Felicidades! Has ganado un premio de $5000. Llama al 555-0123 ahora para reclamar tu recompensa.",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡GANADOR! Entrada gratuita para ganar £1000 en efectivo. Envía WIN al 87121. Responde STOP para darte de baja.",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "URGENTE: La entrega de su paquete falló. Actualice su dirección AHORA en www.fake-delivery.com/update o perderá el paquete.",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "ALERTA: Se detectó actividad sospechosa en su cuenta. Verifique inmediatamente en https://secure-bank-verify.com",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡Has sido seleccionado para recibir un iPhone 15 GRATIS! Haz clic aquí: http://tinyurl.com/freeiphone para reclamarlo",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "URGENTE: Su tarjeta de crédito será bloqueada. Llame al 1-800-555-9999 con el código 4782 para evitar la suspensión",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡Felicidades! Ganaste S/ 10,000 en nuestro sorteo. Contacta al 999-888-777 para reclamar tu premio",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡Oferta por tiempo limitado! Obtén 90% de descuento en relojes de lujo. Visita www.fake-luxury.com ¡AHORA!",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "Su suscripción a Netflix ha caducado. Actualice la información de pago en http://goo.gl/netflix-renew o perderá el acceso",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "AVISO FINAL: Reembolso de impuestos de $850 pendiente. Reclámalo en www.irs-refund-claim.com antes de que caduque hoy.",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "Código de verificación: 482910. URGENTE: Ingresa este código en www.verify-account.net en 5 minutos",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡BONO EN EFECTIVO GRATIS £500! Responde YES al 83838. Se aplican tarifas estándar. Solo mayores de 18. www.bonus-cash.co.uk",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "Su pedido de Amazon #12345 requiere actualización de pago. Haz clic: http://amzn-secure.com/update-payment",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "¡GANADOR GANADOR! Has ganado 2 entradas para la final de la FA Cup. Envía FA al 87121. Aplican términos y condiciones 08452810075",
-    "expected_label": "smishing"
+    "expected_label": "spam"
   },
   {
     "text": "Hola, ¿estás libre para almorzar mañana?",
