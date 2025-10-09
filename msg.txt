@@ -1,0 +1,7 @@
+feat(ml): Implementa la infraestructura para entrenamiento y clasificación de ML
+
+Añade los scripts esenciales para el backend de detección de spam/smishing, utilizando el modelo LinearSVC + TF-IDF, que será consumido por la API.
+
+Detalles:
+- **train_ml.py:** Script para cargar datos, entrenar el modelo (Pipeline) y guardar los artefactos (vectorizador + clasificador) con Joblib.
+- **infer_ml.py:** Módulo de inferencia que carga el modelo guardado y proporciona una función para predecir la etiqueta (`smishing`/`ham`) y calcular un score relativo (distancia al hiperplano).

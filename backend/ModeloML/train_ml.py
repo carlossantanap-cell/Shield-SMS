@@ -3,7 +3,7 @@ Entrena un modelo ML (TF-IDF + LinearSVC) sobre SMSSpamCollection o dataset.csv
 y guarda vectorizador+modelo con joblib.
 
 Uso:
-  python -m ModeloML.train_ml --data backend/data/SMSSpamCollection.txt --out backend/ml/artifacts
+  python -m ModeloML.train_ml --data backend/data/SMSSpamCollection.txt --out backend/ModeloML/artifacts
 """
 import argparse
 import os
