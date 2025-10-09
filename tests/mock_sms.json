@@ -1,47 +1,47 @@
 
 [
   {
-    "text": "¡URGENTE! Su cuenta bancaria ha sido comprometida. Haga clic aquí para verificar: http://bit.ly/secure123",
+    "text": "URGENT! Your bank account has been compromised. Click here to verify: http://bit.ly/secure123",
     "expected_label": "smishing"
   },
   {
-    "text": "¡Felicidades! Has ganado un premio de $5000. Llama al 555-0123 ahora para reclamar tu recompensa.",
+    "text": "Congratulations! You've won $5000 prize. Call 555-0123 now to claim your reward!",
     "expected_label": "smishing"
   },
   {
-    "text": "¡GANADOR! Entrada gratuita para ganar £1000 en efectivo. Envía WIN al 87121. Responde STOP para darte de baja.",
+    "text": "WINNER! Free entry to win £1000 cash. Text WIN to 87121. Reply STOP to opt out.",
     "expected_label": "smishing"
   },
   {
-    "text": "URGENTE: La entrega de su paquete falló. Actualice su dirección AHORA en www.fake-delivery.com/update o perderá el paquete.",
+    "text": "URGENT: Your package delivery failed. Update your address NOW at www.fake-delivery.com/update or lose package!",
     "expected_label": "smishing"
   },
   {
-    "text": "ALERTA: Se detectó actividad sospechosa en su cuenta. Verifique inmediatamente en https://secure-bank-verify.com",
+    "text": "ALERT: Suspicious activity detected on your account. Verify immediately at https://secure-bank-verify.com",
     "expected_label": "smishing"
   },
   {
-    "text": "¡Has sido seleccionado para recibir un iPhone 15 GRATIS! Haz clic aquí: http://tinyurl.com/freeiphone para reclamarlo",
+    "text": "You have been selected for a FREE iPhone 15! Click here: http://tinyurl.com/freeiphone to claim",
     "expected_label": "smishing"
   },
   {
-    "text": "URGENTE: Su tarjeta de crédito será bloqueada. Llame al 1-800-555-9999 con el código 4782 para evitar la suspensión",
+    "text": "URGENT: Your credit card will be blocked. Call 1-800-555-9999 with code 4782 to prevent suspension",
     "expected_label": "smishing"
   },
   {
-    "text": "¡Felicidades! Ganaste S/ 10,000 en nuestro sorteo. Contacta al 999-888-777 para reclamar tu premio",
+    "text": "Felicidades! Ganaste S/ 10,000 en nuestro sorteo. Contacta al 999-888-777 para reclamar tu premio",
     "expected_label": "smishing"
   },
   {
-    "text": "¡Oferta por tiempo limitado! Obtén 90% de descuento en relojes de lujo. Visita www.fake-luxury.com ¡AHORA!",
+    "text": "Limited time offer! Get 90% discount on luxury watches. Visit www.fake-luxury.com NOW!",
     "expected_label": "smishing"
   },
   {
-    "text": "Su suscripción a Netflix ha caducado. Actualice la información de pago en http://goo.gl/netflix-renew o perderá el acceso",
+    "text": "Your Netflix subscription expired. Update payment info at http://goo.gl/netflix-renew or lose access",
     "expected_label": "smishing"
   },
   {
-    "text": "AVISO FINAL: Reembolso de impuestos de $850 pendiente. Reclámalo en www.irs-refund-claim.com antes de que caduque hoy.",
+    "text": "FINAL NOTICE: Tax refund of $850 pending. Claim at www.irs-refund-claim.com before it expires today!",
     "expected_label": "smishing"
   },
   {
@@ -49,75 +49,75 @@
     "expected_label": "smishing"
   },
   {
-    "text": "¡BONO EN EFECTIVO GRATIS £500! Responde YES al 83838. Se aplican tarifas estándar. Solo mayores de 18. www.bonus-cash.co.uk",
+    "text": "FREE CASH BONUS £500! Reply YES to 83838. Standard rates apply. 18+ only. www.bonus-cash.co.uk",
     "expected_label": "smishing"
   },
   {
-    "text": "Su pedido de Amazon #12345 requiere actualización de pago. Haz clic: http://amzn-secure.com/update-payment",
+    "text": "Your Amazon order #12345 requires payment update. Click: http://amzn-secure.com/update-payment",
     "expected_label": "smishing"
   },
   {
-    "text": "¡GANADOR GANADOR! Has ganado 2 entradas para la final de la FA Cup. Envía FA al 87121. Aplican términos y condiciones 08452810075",
+    "text": "WINNER WINNER! You won 2 tickets to FA Cup final. Text FA to 87121. T&Cs apply 08452810075",
     "expected_label": "smishing"
   },
   {
-    "text": "Hola, ¿estás libre para almorzar mañana?",
+    "text": "Hey, are you free for lunch tomorrow?",
     "expected_label": "ham"
   },
   {
-    "text": "Gracias por tu ayuda ayer. ¡Realmente lo aprecio!",
+    "text": "Thanks for your help yesterday. I really appreciate it!",
     "expected_label": "ham"
   },
   {
-    "text": "Reunión a las 3 p.m. en la sala de conferencias B. No olvides traer los informes.",
+    "text": "Meeting at 3pm in conference room B. Don't forget to bring the reports.",
     "expected_label": "ham"
   },
   {
-    "text": "¿Puedes comprar leche de camino a casa?",
+    "text": "Can you pick up some milk on your way home?",
     "expected_label": "ham"
   },
   {
-    "text": "¡Feliz cumpleaños! ¡Espero que tengas un día maravilloso!",
+    "text": "Happy birthday! Hope you have a wonderful day!",
     "expected_label": "ham"
   },
   {
-    "text": "La fecha límite del proyecto se ha extendido hasta el próximo viernes.",
+    "text": "The project deadline has been extended to next Friday.",
     "expected_label": "ham"
   },
   {
-    "text": "Estaré allí en 10 minutos. El tráfico está ligero hoy.",
+    "text": "I'll be there in 10 minutes. Traffic is light today.",
     "expected_label": "ham"
   },
   {
-    "text": "Recordatorio: Cita con el médico mañana a las 2 p.m.",
+    "text": "Reminder: Doctor appointment tomorrow at 2pm.",
     "expected_label": "ham"
   },
   {
-    "text": "¡Gran trabajo en la presentación! El cliente quedó muy impresionado.",
+    "text": "Great job on the presentation! The client was very impressed.",
     "expected_label": "ham"
   },
   {
-    "text": "Avísame cuando llegues. Te encontraré en la entrada.",
+    "text": "Let me know when you arrive. I'll meet you at the entrance.",
     "expected_label": "ham"
   },
   {
-    "text": "Gracias por la invitación a cenar. ¡Nos encantaría ir!",
+    "text": "Thanks for the dinner invitation. We'd love to come!",
     "expected_label": "ham"
   },
   {
-    "text": "El paquete llegó sin problemas. Gracias por enviarlo tan rápido.",
+    "text": "The package arrived safely. Thank you for sending it so quickly.",
     "expected_label": "ham"
   },
   {
-    "text": "¿Nos vemos en el gimnasio a las 6 a.m. mañana?",
+    "text": "See you at the gym at 6am tomorrow?",
     "expected_label": "ham"
   },
   {
-    "text": "Su reserva está confirmada para el sábado a las 7 p.m.",
+    "text": "Your reservation is confirmed for Saturday at 7pm.",
     "expected_label": "ham"
   },
   {
-    "text": "¡Buenos días! Que tengas un gran día en el trabajo.",
+    "text": "Good morning! Have a great day at work.",
     "expected_label": "ham"
   }
 ]
