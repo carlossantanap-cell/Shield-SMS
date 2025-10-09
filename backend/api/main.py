@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 # ===== ML opcional (no falla si aún no existe) =====
 try:
-    from ml.infer_ml import predict_label_score, load_pipeline  # -> (label, score)
+    from ModeloML.infer_ml import predict_label_score, load_pipeline  # -> (label, score)
 except Exception:  # noqa
     predict_label_score = None
     load_pipeline = None
@@ -32,44 +32,78 @@ def on_startup():
 
 @app.get("/health")
 def health():
-    """Simple healthcheck + flag de si se cargó el modelo ML."""
+    """Verifica el estado del servicio y si el modelo ML está cargado correctamente."""
+    import os
+    from ModeloML.infer_ml import load_pipeline
+
     ml_ok = False
-    if load_pipeline:
-        import os
-        ml_ok = os.path.exists(os.getenv("SMS_ML_PATH", "backend/ml/artifacts/sms_pipeline.joblib"))
-    return {"status": "ok", "ml_loaded": ml_ok}
+    model_path = os.getenv("SMS_ML_PATH", "backend/ModeloML/artifacts/sms_pipeline.joblib")
+    if os.path.exists(model_path):
+        ml_ok = True
+
+    return {
+        "status": "ok",
+        "service": "ShieldSMS",  # requerido por el test
+        "ml_loaded": ml_ok
+    }
 
 @app.post("/classify")
 def classify(inp: InText):
-    text = inp.text
+    """
+    Clasifica un mensaje SMS como 'ham' (normal) o 'smishing' (fraudulento).
+    Usa modelo ML si está disponible, luego reglas, y finalmente un fallback básico.
+    """
+    text = inp.text or ""
 
-    # 1) ML si está disponible
-    if predict_label_score:
-        try:
+    # ⚙️ 1) Validar texto (vacío o muy largo)
+    if not text.strip() or len(text) > 5000:
+        return {
+            "text": text,
+            "label": "ham",
+            "score": None,
+            "source": "fallback"
+        }
+
+    # ⚙️ 2) Intentar clasificar con modelo ML
+    try:
+        if predict_label_score:
             out = predict_label_score(text)
             if out is not None:
                 label, score = out
                 return {
+                    "text": text,  # requerido por los tests
                     "label": label,
                     "score": float(score) if score is not None else None,
                     "source": "ml"
                 }
-        except Exception:
-            # Si el modelo falla, continuamos al fallback
-            pass
+    except Exception:
+        pass  # fallback automático si el modelo falla
 
-    # 2) Reglas si existen
-    if classify_by_rules:
-        try:
+    # ⚙️ 3) Intentar clasificar con reglas
+    try:
+        if classify_by_rules:
             label_rules, features = classify_by_rules(text)
             return {
+                "text": text,
                 "label": label_rules,
                 "score": None,
                 "features_detected": features,
                 "source": "rules"
             }
-        except Exception:
-            pass
+    except Exception:
+        pass
 
-    # 3) Fallback seguro
-    return {"label": "ham", "score": None, "source": "fallback"}
+    # ⚙️ 4) Fallback básico
+    text_lower = text.lower()
+    if any(word in text_lower for word in ["congratulations", "prize", "click", "http", "win"]):
+        label = "smishing"
+    else:
+        label = "ham"
+
+    return {
+        "text": text,  # requerido
+        "label": label,
+        "score": None,
+        "source": "fallback"
+    }
+
