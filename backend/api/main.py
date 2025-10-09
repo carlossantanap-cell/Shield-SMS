@@ -1,5 +1,5 @@
 # backend/api/main.py
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 # ===== ML opcional (no falla si aún no existe) =====
@@ -19,13 +19,12 @@ app = FastAPI(title="Shield-SMS API")
 
 
 class InText(BaseModel):
-    # 🔧 Permitir texto vacío u omitido para evitar error 422
     text: str | None = ""
 
 
 @app.on_event("startup")
 def on_startup():
-    # Intentar cargar el modelo ML si existe
+    """Cargar el modelo ML si existe al iniciar la app"""
     if load_pipeline:
         try:
             load_pipeline()
@@ -35,7 +34,7 @@ def on_startup():
 
 @app.get("/health")
 def health():
-    """Verifica el estado del servicio y si el modelo ML está cargado correctamente."""
+    """Verifica el estado del servicio y si el modelo ML está cargado correctamente"""
     import os
 
     ml_ok = False
@@ -57,16 +56,14 @@ def classify(inp: InText):
     Usa modelo ML si está disponible, luego reglas, y finalmente un fallback básico.
     Compatible con los tests automáticos.
     """
-    text = inp.text or ""
+    text = (inp.text or "").strip()
 
     # ⚙️ 1) Validar texto vacío o demasiado largo
-    if not text.strip() or len(text) > 5000:
-        return {
-            "text": text,
-            "label": "ham",
-            "score": None,
-            "source": "fallback"
-        }
+    if not text or len(text) > 5000:
+        raise HTTPException(
+            status_code=422,
+            detail="El texto no puede estar vacío o superar 5000 caracteres"
+        )
 
     # ⚙️ 2) Intentar clasificar con modelo ML
     try:
@@ -83,7 +80,7 @@ def classify(inp: InText):
     except Exception:
         pass  # si el modelo falla, se pasa al siguiente método
 
-    # ⚙️ 3) Intentar clasificar con reglas (si existen)
+    # ⚙️ 3) Intentar clasificar con reglas
     try:
         if classify_by_rules:
             label_rules, features = classify_by_rules(text)
@@ -97,7 +94,7 @@ def classify(inp: InText):
     except Exception:
         pass
 
-    # ⚙️ 4) Fallback básico (sin ML ni reglas)
+    # ⚙️ 4) Fallback básico
     text_lower = text.lower()
     if any(word in text_lower for word in ["congratulations", "prize", "click", "http", "win"]):
         label = "smishing"
